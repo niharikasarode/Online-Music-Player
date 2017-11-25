@@ -285,23 +285,35 @@ switch($s)
                 <table class='table table-striped'>
                 <thead>
                 <tr>
-                <th>Username</th>
-                <th> Password </th>
+                <th>#</th>
+		<th>Title</th>
+		<th>Listen</th>
+		<th>Price</th>
+		<th>Length</th>
                 </tr>
                 </thead>
                 <tbody>
 		";
 
 		$album=mysqli_real_escape_string($db,$album);
-		if($stmt = mysqli_prepare($db,"SELECT userid FROM users WHERE username=?"))		
+		if($stmt = mysqli_prepare($db,"SELECT  track_id, title, song_url, price, length FROM Tracks WHERE album_id=?"))		
 		{
-			mysqli_stmt_bind_param($stmt, "s", $newUser);
+			mysqli_stmt_bind_param($stmt, "i", $album);
 			mysqli_stmt_execute($stmt);
-			mysqli_stmt_bind_result($stmt,$uid);
-			$uid = htmlspecialchars($uid);
+			mysqli_stmt_bind_result($stmt,$track_id, $title, $song_url, $price, $length);
 			while(mysqli_stmt_fetch($stmt))
 			{
-				$uid = $uid;
+			$track_id = htmlspecialchars($track_id);
+			$title = htmlspecialchars($title);
+			$song_url = htmlspecialchars($song_url);
+			$price = htmlspecialchars($price);
+			$length = htmlspecialchars($length);
+
+			echo"<tr><th scope='row'>$track_id</th>
+                                <td>$title</td>
+                                <td> <audio controls controlsList='nodownload' src =$song_url> </td>
+                                <td> $$price </td> <td> $length </td> </tr>";
+			
 			}
 			mysqli_stmt_close($stmt);
 		}
