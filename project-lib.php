@@ -11,6 +11,7 @@ isset($_REQUEST['album'])?$album=strip_tags($_REQUEST['album']):$album="";
 isset($_REQUEST['track_id'])?$track_id=strip_tags($_REQUEST['track_id']):$track_id="";
 isset($_REQUEST['title'])?$title=strip_tags($_REQUEST['title']):$title="";
 isset($_REQUEST['song_url'])?$song_url=strip_tags($_REQUEST['song_url']):$song_url="";
+isset($_REQUEST['title1'])?$title1=strip_tags($_REQUEST['title1']):$title1="";
 isset($_REQUEST['price'])?$price=strip_tags($_REQUEST['price']):$price="";
 isset($_REQUEST['length'])?$length=strip_tags($_REQUEST['length']):$length="";
 isset($_REQUEST['postUser'])?$postUser=strip_tags($_REQUEST['postUser']):$postUser="";
@@ -21,8 +22,10 @@ isset($_REQUEST['password'])?$password=strip_tags($_REQUEST['password']):$passwo
 isset($_REQUEST['user_id'])?$user_id=strip_tags($_REQUEST['user_id']):$user_id="";
 isset($_REQUEST['email'])?$email=strip_tags($_REQUEST['email']):$email="";
 isset($_REQUEST['epass'])?$epass=strip_tags($_REQUEST['epass']):$epass="";
-
-
+isset($_REQUEST['order_name'])?$order_name=strip_tags($_REQUEST['order_name']):$order_name="";
+isset($_REQUEST['cid'])?$cid = strip_tags($_REQUEST['cid']):$cid=""; //Setting variable
+isset($_REQUEST['userid'])?$userid = strip_tags($_REQUEST['userid']):$userid=""; //Setting variable
+isset($_REQUEST['price1'])?$price1=strip_tags($_REQUEST['price1']):$price1="";
 
 function check_numeric($num)
 {

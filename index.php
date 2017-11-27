@@ -36,7 +36,8 @@ echo"
                 <a class='nav-link' href=tracks.php?s=0>Top Charts</a>
                 <a class='nav-link' href=tracks.php?s=1>Albums</a>
 	        <a class='nav-link' href=tracks.php>Sign In</a>
-	      </nav>
+	        <a class='nav-link' href=tracks.php?s=50>LOGOUT</a>
+		</nav>
             </div>
 	  </header>
 

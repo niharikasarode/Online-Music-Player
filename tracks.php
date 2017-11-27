@@ -109,11 +109,17 @@ switch($s)
     		<link href='tracks.css' rel='stylesheet'>
 		</head>
 		
-		<ul class='nav justify-content-end'>
+		<ul class='nav justify-content-center'>
 		<nav class='nav nav-pills nav-fill nav-justified'>
-    		<a class='nav-link active' href='tracks.php'>TRACKS</a>
+		<a class='nav-link active' href='tracks.php'>TRACKS</a>
+		</nav>
+                </ul>
+                <ul class='nav justify-content-end'>
+                <nav class='navbar navbar-inverse bg-primary'>
 		<a class='nav-link' href=index.php>HOME</a>
 		<a class='nav-link' href=tracks.php?s=50>LOGOUT</a>
+		</nav>
+		</ul>
 		<body>";
 	
 	
@@ -129,6 +135,7 @@ switch($s)
 		<th>Length</th>
 		<th>Listen</th>
 		<th>Price</th>
+		<th>Order</th>
 		</tr>
   		</thead>
   		<tbody>";
@@ -137,7 +144,7 @@ switch($s)
 			echo"<tr><th scope='row'>$row[0]</th>
 				<td><img src=$row[3] width='50' height='50'></td> <td>$row[1]</td> <td> $row[5] </td> 
 				<td> <audio controls controlsList='nodownload' src =$row[2] > </td>
-				<td> $$row[4] </td> </tr>";
+				<td> $$row[4] </td> <td> <a href=tracks.php?s=5&order_name=$row[0]> BUY </a>  </td> </tr>";
 		}
 		echo"</table>";
 		break;
@@ -163,11 +170,17 @@ switch($s)
     		<!-- Custom styles for this template -->
     		<link href='tracks.css' rel='stylesheet'>
  	 	</head>
-		<ul class='nav justify-content-end'>
+		<ul class='nav justify-content-center'>
 		<nav class='nav nav-pills nav-fill nav-justified'>
 		<a class='nav-link active' href='tracks.php'>ALBUMS</a>
+		</nav>
+		</ul>
+		<ul class='nav justify-content-end'>
+		<nav class='navbar navbar-inverse bg-primary'>
 		<a class='nav-link' href=index.php>HOME</a>
 		<a class='nav-link' href=tracks.php?s=50>LOGOUT</a>
+		</nav>
+		</ul>
 		<body>";
 
 		
@@ -183,6 +196,7 @@ switch($s)
 		<th>Artist</th>
 		<th>Price</th>
 		<th>View Album</th>
+		<th>Order</th>
 		</tr>
 		</thead>
 		</tbody>";
@@ -191,8 +205,8 @@ switch($s)
 		echo"<tr><th scope='row'>$row[0]</th>
 		     <td><img src=$row[3] width='50' height='50'></td> <td>$row[1]</td>
 		     <td> $row[4] </td>
-		     <td> $row[2] </td>
-		     <td> <a href=tracks.php?s=4&album=$row[0]>$row[1]</td></tr>";
+		     <td> $row[2] </td>	
+		     <td> <a href=tracks.php?s=4&album=$row[0]>$row[1]</td><td> <a href=tracks.php?s=6&order_name=$row[0]>BUY</a></td></tr>";
 
 		}
 		echo"</table>";
@@ -260,7 +274,7 @@ switch($s)
 			<td><input type=\"password\" name=\"newPass\" value=\"\"></td></tr>
 			<tr><td> Email ID: </td>
 			<td><input type=\"text\" name=\"newEmail\" value=\"\"></td></tr>
-			<r><td><input type=\"hidden\" name=\"s\" value=\"3\">
+			<tr><td><input type=\"hidden\" name=\"s\" value=\"3\">
 			<input type=\"submit\" name=\"submit\" value=\"Submit\"></td></tr></table></form>";
 			break;		
 
@@ -356,6 +370,113 @@ switch($s)
 			echo "Error!";
 		}
 		break;
+
+		
+		//inserting into orders table (tracks)
+	case 5:
+		$order_name=mysqli_real_escape_string($db, $order_name);
+		$cid=$_SESSION['user_id'];
+		
+		error_log("From cases : $order_name, $cid");
+		
+		if($stmt = mysqli_prepare($db,"SELECT title, price FROM Tracks WHERE track_id=?"))
+                {
+                        mysqli_stmt_bind_param($stmt, "s", $order_name);
+                        mysqli_stmt_execute($stmt);
+                        mysqli_stmt_bind_result($stmt,$title1,$price1);
+                        while(mysqli_stmt_fetch($stmt))
+                        {
+                        $title1 = htmlspecialchars($title1);
+                        $price1 = htmlspecialchars($price1);
+
+                        }
+                        mysqli_stmt_close($stmt);
+                }
+
+                else
+                {
+                        echo "Error!";
+                }
+
+
+
+		if($stmt = mysqli_prepare($db,"INSERT INTO Orders SET order_id='',customer_id=?, order_name=?, price=?, date=NOW()"))
+                {
+                        mysqli_stmt_bind_param($stmt, "isi", $cid, $title1, $price1);
+                        mysqli_stmt_execute($stmt);
+                        mysqli_stmt_close($stmt);
+                }
+                else echo"ERROR Inserting into table";
+                echo "
+		
+		<link href='login.css' rel='stylesheet'>
+		<form method=post action=tracks.php>
+		<table>
+		<p><tr><td style='padding-left:55px;padding-bottom:30px;font-size:40px;font-family:Georgia'><a href=tracks.php?s=0>Buy Another song</a><br/></td></tr></p>
+                <p><tr><td style='padding-left:55px;padding-bottom:30px;font-size:40px;font-family:Georgia'><a href=tracks.php?s=1>Buy Another Album</a><br/></td></tr></p>
+                <p><tr><td style='padding-left:55px;padding-bottom:30px;font-size:40px;font-family:Georgia'><a href=index.php>Home</a><br/></td></tr></p>
+
+
+		";
+                break;
+	
+
+
+		
+		//inserting into orders table (albums)
+	case 6:
+		$order_name=mysqli_real_escape_string($db, $order_name);
+		$cid=$_SESSION['user_id'];
+		
+		error_log("From cases : $order_name, $cid");
+		
+		if($stmt = mysqli_prepare($db,"SELECT title, price FROM Albums WHERE album_id=?"))
+                {
+                        mysqli_stmt_bind_param($stmt, "s", $order_name);
+                        mysqli_stmt_execute($stmt);
+                        mysqli_stmt_bind_result($stmt,$title1,$price1);
+                        while(mysqli_stmt_fetch($stmt))
+                        {
+                        $title1 = htmlspecialchars($title1);
+                        $price1 = htmlspecialchars($price1);
+
+                        }
+                        mysqli_stmt_close($stmt);
+                }
+
+                else
+                {
+                        echo "Error!";
+                }
+
+
+
+		if($stmt = mysqli_prepare($db,"INSERT INTO Orders SET order_id='',customer_id=?, order_name=?, price=?, date=NOW()"))
+                {
+                        mysqli_stmt_bind_param($stmt, "isi", $cid, $title1, $price1);
+                        mysqli_stmt_execute($stmt);
+                        mysqli_stmt_close($stmt);
+                }
+                else echo"ERROR Inserting into table";
+                echo "
+		<style>
+		p{
+			margin-top:100px;
+		}
+		</style>	
+		<link href='login.css' rel='stylesheet'>
+                <form method=post action=tracks.php>
+                <table>
+                <p><tr><td style='padding-left:55px;padding-bottom:30px;font-size:40px;font-family:Georgia'><a href=tracks.php?s=0>Buy Another song</a><br/></td></tr></p>
+                <p><tr><td style='padding-left:55px;padding-bottom:30px;font-size:40px;font-family:Georgia'><a href=tracks.php?s=1>Buy Another Album</a><br/></td></tr></p>
+                <p><tr><td style='padding-left:55px;padding-bottom:30px;font-size:40px;font-family:Georgia'><a href=index.php>Home</a><br/></td></tr></p>
+
+
+		";
+                break;
+
+
+
 
 	case 50:
 		session_destroy();
