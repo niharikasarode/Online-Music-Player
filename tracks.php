@@ -1,8 +1,15 @@
 <?php
-
+session_start();
 include_once('/var/www/html/Project/project-lib.php');
 connect($db);
 
+if(($s != 2) && ($s !=3))
+{
+if(!isset($_SESSION['authenticated']))
+{
+	authenticate($db, $postUser, $postPassd);
+}
+}
 echo"
 <!doctype html>
 <html lang='en'>
@@ -44,12 +51,12 @@ if($s == NULL)
                 <!-- Custom styles for this template -->
                 <link href='tracks.css' rel='stylesheet'>
                 </head>
-                <ul class='nav justify-content-center'>
-                <ul class='nav nav-tabs justify-content-center'>
-                <li class='nav-item'>
+		<ul class='nav justify-content-end'>
+                <nav class='nav nav-pills nav-fill nav-justified'>
                 <a class='nav-link active' href='tracks.php'>TRACKS</a>
-                </li>
-                <body>";
+		<a class='nav-link' href=index.php>HOME</a>
+		<a class='nav-link' href=tracks.php?s=50>LOGOUT</a>
+		<body>";
 	
 	
 	
@@ -100,13 +107,14 @@ switch($s)
 
     		<!-- Custom styles for this template -->
     		<link href='tracks.css' rel='stylesheet'>
- 	 	</head>
-		<ul class='nav justify-content-center'>
-		<ul class='nav nav-tabs justify-content-center'>
-  		<li class='nav-item'>
+		</head>
+		
+		<ul class='nav justify-content-end'>
+		<nav class='nav nav-pills nav-fill nav-justified'>
     		<a class='nav-link active' href='tracks.php'>TRACKS</a>
-  		</li>
-  		<body>";
+		<a class='nav-link' href=index.php>HOME</a>
+		<a class='nav-link' href=tracks.php?s=50>LOGOUT</a>
+		<body>";
 	
 	
 	
@@ -155,12 +163,12 @@ switch($s)
     		<!-- Custom styles for this template -->
     		<link href='tracks.css' rel='stylesheet'>
  	 	</head>
-		<ul class='nav justify-content-center'>
-		<ul class='nav nav-tabs justify-content-center'>
-  		<li class='nav-item'>
-    		<a class='nav-link active' href='tracks.php'>ALBUMS</a>
-  		</li>
-  		<body>";
+		<ul class='nav justify-content-end'>
+		<nav class='nav nav-pills nav-fill nav-justified'>
+		<a class='nav-link active' href='tracks.php'>ALBUMS</a>
+		<a class='nav-link' href=index.php>HOME</a>
+		<a class='nav-link' href=tracks.php?s=50>LOGOUT</a>
+		<body>";
 
 		
 		
@@ -174,15 +182,17 @@ switch($s)
 		<th>Albums</th>
 		<th>Artist</th>
 		<th>Price</th>
+		<th>View Album</th>
 		</tr>
 		</thead>
 		</tbody>";
 		while($row=mysqli_fetch_row($result))
 		{
 		echo"<tr><th scope='row'>$row[0]</th>
-                     <td><img src=$row[3] width='50' height='50'></td> <td> <a href=tracks.php?s=4&album=$row[0]>$row[1]</td>
+		     <td><img src=$row[3] width='50' height='50'></td> <td>$row[1]</td>
 		     <td> $row[4] </td>
-		     <td> $row[2] </td></tr>";
+		     <td> $row[2] </td>
+		     <td> <a href=tracks.php?s=4&album=$row[0]>$row[1]</td></tr>";
 
 		}
 		echo"</table>";
@@ -206,27 +216,49 @@ switch($s)
 
                 <!-- Custom styles for this template -->
                 <link href='tracks.css' rel='stylesheet'>
-                </head>
-                <ul class='nav justify-content-center'>
-                <ul class='nav nav-tabs justify-content-center'>
-                <li class='nav-item'>
-                <a class='nav-link active' href='tracks.php'>SIGN UP</a>
-                </li>
+		<link href='login.css' rel='stylesheet'>
+		</head>
+	        <ul class='nav justify-content-center'>
+                <nav class='nav nav-pills'>	
+		<a class='nav-link active' href='tracks.php'>SIGN UP</a>
+		<a class='nav-link' href='index.php'>GO TO HOME PAGE</a>
+		</nav>
+		</ul>
 		<body>";
 		
 		echo "
+			
+			<form method=post action=tracks.php>
+			<table cellspacing='150'>
+        		<center>
+        		<h1>SIGN UP!</h1>
+        		<p>Required fields are followed by <strong><abbr title=\"required\">*</abbr></strong>.</p>
 
-			<style>
-			p{
-				margin-top:300px;
-			}
-			</style>
-			<p><form method=post action=tracks.php></p>
+        		<section>
+    			<h2>Contact information</h2>
+    			<fieldset>
+      			<legend>Title</legend>
+      			<ul>
+          		<li>
+            		<label for=\"title_1\">
+              		<input type=\"radio\" id=\"title_1\" name=\"title\" value=\"M.\" >
+              		Mister
+            		</label>
+          		</li>
+          		<li>
+            		<label for=\"title_2\">
+              		<input type=\"radio\" id=\"title_2\" name=\"title\" value=\"Ms.\">
+              		Miss
+            		</label>
+          		</li>
+      			</ul>
+    			</fieldset>
+
 			<table><tr><td> Username: </td>
 			<td><input type=\"text\" name=\"newUser\" value=\"\"></td></tr>
-			<table><tr><td> Password: </td>
+			<tr><td> Password: </td>
 			<td><input type=\"password\" name=\"newPass\" value=\"\"></td></tr>
-			<table><tr><td> Email ID: </td>
+			<tr><td> Email ID: </td>
 			<td><input type=\"text\" name=\"newEmail\" value=\"\"></td></tr>
 			<r><td><input type=\"hidden\" name=\"s\" value=\"3\">
 			<input type=\"submit\" name=\"submit\" value=\"Submit\"></td></tr></table></form>";
@@ -248,13 +280,14 @@ switch($s)
 		}
 		else echo"ERROR Inserting into table";
 		echo "
-		<tr><td align='center'><input type=\"hidden\" name=\"s\" value=\"2\"> </td>
-		<input type=\"hidden\" name=\"username\" value=\"$newUser\">
-		<input type=\"hidden\" name=\"password\" value=\"$pass\">
+		<form method=post action=tracks.php>
+		<table><tr><td><input type=\"hidden\" name=\"s\" value=\"2\">
+		<p><text-align: 'center'><a href=tracks.php?s=2>Sign up As Different User</a><br/>
+		<a href=index.php>Home</a><br/></p>
 		";
 		break;
 
-
+		/*List songs under an album*/
 	case 4:
 
 		echo"
@@ -322,7 +355,12 @@ switch($s)
 		{
 			echo "Error!";
 		}
+		break;
 
+	case 50:
+		session_destroy();
+		header("Location: /Project/login.php");
+		exit;
 }		
 
 

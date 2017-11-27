@@ -35,8 +35,8 @@ h1 {
 html,
 body {
   background-color: #333;
-background-image: url("image1.png");
-    /* Full height */
+  background-image: url("image1.png");
+  /* Full height */
     min-height: 900px;
 
     /* Center and scale the image nicely */
@@ -53,19 +53,6 @@ body {
 
 }
 
-div.form
-{
-    display: block;
-    text-align: center;
-}
-form
-{
-    display: inline-block;
-    margin-left: auto;
-    margin-right: auto;
-    text-align: left;
-}
-
 
 /* Extra markup and styles for table-esque vertical and horizontal centering */
 .site-wrapper {
@@ -77,7 +64,7 @@ form
 }
 .site-wrapper-inner {
   display: table-cell;
-  vertical-align: top;
+  vertical-align: bottom;
 }
 .cover-container {
   margin-right: auto;
