@@ -63,6 +63,41 @@ function connect(&$db)
 
 function authenticate($db, $postUser, $postPassd)
 {
+
+	$_SESSION['ip']=$_SERVER['REMOTE_ADDR'];
+	$_SESSION['HTTP_USER_AGENT']= md5($_SERVER['SERVER_ADDR'].$_SERVER['HTTP_USER_AGENT']);
+	$_SESSION['created']=time();
+	$id = $_SESSION['ip'];
+	$fail = 'SEVEN';
+	$query = "SELECT ip,COUNT(ip) FROM Login WHERE date > DATE_SUB(NOW(), INTERVAL 1 HOUR) AND action = 'FAIL'";
+	$result = mysqli_query($db, $query);
+  	while($row = mysqli_fetch_row($result))
+	{
+		if($row[1] >= 5)
+		{
+			error_log("Detected 5 failed logins");
+        		if($row[0] == $id)
+        		{
+                		error_log("And from Same IP");
+                		$fail = 'FIVE';
+        		}
+
+		}
+	}
+	
+	// If there were 5 failed logins from the same IP used to currently login, redirect the user to login n block.
+	if($fail == 'FIVE')
+	{
+
+                session_destroy();
+                header("Location: /Project/login.php");
+                exit;
+	}
+
+
+
+
+
 	if($stmt=mysqli_prepare($db, "SELECT user_id, email, password, salt FROM Customers WHERE username =?"))
 	{
 		mysqli_stmt_bind_param($stmt, "s", $postUser);
@@ -129,6 +164,73 @@ function authenticate($db, $postUser, $postPassd)
 
 }
 
+function check_auth()
+{
+	if(isset($_SESSION['HTTP_USER_AGENT']))
+	{
+		if($_SESSION['HTTP_USER_AGENT'] != md5($_SERVER['SERVER_ADDR'].$_SERVER['HTTP_USER_AGENT'])) //logging in using firefox vs chrome
+		{
+			error_log("here 1", 0);
+			header("Location: /Project/login.php");	
 
+		}
+	}
+
+	else 
+	{
+		
+			header("Location: /Project/login.php");	
+	}
+
+
+	
+	if(isset($_SESSION['ip']))
+	{
+		
+		if($_SESSION['ip'] != $_SERVER['REMOTE_ADDR'])
+		{
+				
+			error_log("here 2",0);
+			header("Location: /Project/login.php");	
+		}
+	}
+	else
+	{
+		header("Location: /Project/login.php");	
+	}
+
+
+	
+
+	if(isset($_SESSION['created'])) // change time to see if it kicks you out
+	{
+		if( time() - $_SESSION['created'] > 1800)
+		{
+			header("Location: /Project/login.php");
+		}
+	}
+	else 
+	{
+		header("Location: /Project/login.php");
+	}
+
+	
+	if("POST" == $_SERVER["REQUEST_METHOD"])
+	{
+		if(isset($_SERVER["HTTP_ORIGIN"]))
+		{
+			if($_SERVER["HTTP_ORIGIN"] != "https://100.66.1.11")
+			{
+				error_log("Here 3 http origin",0);
+				header("Location: /Project/login.php");
+			}
+		}
+		else
+		{
+			header("Location: /Project/login.php");
+		}
+	}
+
+}
 
 ?>

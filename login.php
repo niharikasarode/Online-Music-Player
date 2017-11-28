@@ -66,5 +66,8 @@ echo"
 	</section>
 	</table>
 	</form>
+
+	<p> Dont Have an Account With Us?? </p> <br/>
+	<a href=tracks.php?s=2 class='btn btn-lg btn-secondary'>SIGN UP</a>
 	</html>";
 ?>

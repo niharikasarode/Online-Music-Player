@@ -31,18 +31,20 @@ echo"
             <div class='inner'>
 	      <h3 class='masthead-brand'></h3>
 	      <ul class='nav justify-content-center'>
+		<nav class='navbar navbar-inverse bg-primary'>
               <nav class='nav nav-pills nav-fill nav-justified'>
                 <a class='nav-link active' href=index.html>Home</a>
                 <a class='nav-link' href=tracks.php?s=0>Top Charts</a>
                 <a class='nav-link' href=tracks.php?s=1>Albums</a>
 	        <a class='nav-link' href=tracks.php>Sign In</a>
-	        <a class='nav-link' href=tracks.php?s=50>LOGOUT</a>
+	        <a class='nav-link' href=tracks.php?s=7>View Orders</a>
+	        <a class='nav-link' href=tracks.php?s=50>Logout</a>
 		</nav>
             </div>
 	  </header>
 
     <main role='main' class='inner cover'>
-            <h1 style='font-family:Noteworthy; font-size:500%;' class='cover-heading'>Online Music Store</h1>
+            <h1 style='font-size:650%;' class='cover-heading'>Online Music Store</h1>
             <p class='lead'><blockquote> View.. Listen .. Buy.. </blockquote></p>
             <p class='lead'>
               <a href=tracks.php?s=2 class='btn btn-lg btn-secondary'>SIGN UP</a>

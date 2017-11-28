@@ -9,6 +9,8 @@ if(!isset($_SESSION['authenticated']))
 {
 	authenticate($db, $postUser, $postPassd);
 }
+
+check_auth();
 }
 echo"
 <!doctype html>
@@ -88,6 +90,7 @@ elseif(is_numeric($s))
 switch($s)
 {
 
+		//tracks
 	case 0:
 	default:
 
@@ -149,7 +152,7 @@ switch($s)
 		echo"</table>";
 		break;
 
-
+		//ALBUMS
 	case 1:
 		
 		
@@ -212,7 +215,7 @@ switch($s)
 		echo"</table>";
 		break;
 
-
+	// form for sign up
 	case 2:
 		echo"
                 <!doctype html>
@@ -278,7 +281,7 @@ switch($s)
 			<input type=\"submit\" name=\"submit\" value=\"Submit\"></td></tr></table></form>";
 			break;		
 
-	
+		//insert signing up info into Customers table	
 	case 3:
 		$newUser=mysqli_real_escape_string($db,$newUser);
 		$newPass=mysqli_real_escape_string($db,$newPass);
@@ -475,7 +478,70 @@ switch($s)
 		";
                 break;
 
+		// view orders(all orders for all customers) for admin
+	case 7:
+		if($_SESSION['user_id'] == 1)
+		{
+			echo"
+                <!doctype html>
+                <html lang='en'>
+                <head>
+                <meta charset='utf-8'>
+                <meta name='viewport' content='width=device-width, initial-scale=1, shrink-to-fit=no'>
+                <meta name='description' content=''>
+                <meta name='author' content=''>
+                <link rel='icon' href='/bootstrap-4.0.0-beta.2/favicon.ico'>
 
+
+                <!-- Bootstrap core CSS -->
+                <link href='/bootstrap-4.0.0-beta.2/dist/css/bootstrap.min.css' rel='stylesheet'>
+
+                <!-- Custom styles for this template -->
+                <link href='tracks.css' rel='stylesheet'>
+                </head>
+                <ul class='nav justify-content-center'>
+                <nav class='nav nav-pills nav-fill nav-justified'>
+                <a class='nav-link active' href='tracks.php'>ORDERS</a>
+                </nav>
+                </ul>
+                <ul class='nav justify-content-end'>
+                <nav class='navbar navbar-inverse bg-primary'>
+                <a class='nav-link' href=index.php>HOME</a>
+                <a class='nav-link' href=tracks.php?s=50>LOGOUT</a>
+                </nav>
+                </ul>
+                <body>";
+		
+			$query = "SELECT o.order_id, o.order_name, o.price, o.date, c.username FROM Orders o, Customers c WHERE o.customer_id=c.user_id";
+			$result=mysqli_query($db, $query);
+                	echo "<table class='table table-striped'>
+                	<thead>
+                	<tr>
+                	<th>#</th>
+			<th>Customer Username</th>
+			<th>Item</th>
+                	<th>Price</th>
+                	<th>Date ordered</th>
+                	</tr>
+                	</thead>
+                	<tbody>";
+               		 while($row=mysqli_fetch_row($result))
+			 {
+				echo"<tr><th scope='row'>$row[0]</th>
+					<td>$row[4]</td> <td>$row[1] </td> <td>$row[2]</td> <td>$row[3]</td></tr>";
+			}
+		}
+
+		else 
+		{
+			echo "<link href='login.css' rel='stylesheet'>
+                <form method=post action=tracks.php>
+		<table>
+		<p> You are not Admin! </p>
+		<p><tr><td style='padding-left:55px;padding-bottom:30px;font-size:40px;font-family:Georgia'><a href=index.php>Home</a><br/></td></tr></p>
+		";
+		}
+		break;
 
 
 	case 50:
