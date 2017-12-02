@@ -1,2 +1,2 @@
-# Online-Music-Player
+# Online-Music-Store
 Secure Web Application (PHP, MySQL)
