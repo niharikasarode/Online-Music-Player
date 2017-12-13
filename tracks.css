@@ -54,9 +54,6 @@ body {
 }
 
 
-input #desc{width:400px; height:250px;} 
-
-
 /* Extra markup and styles for table-esque vertical and horizontal centering */
 .site-wrapper {
   display: table;

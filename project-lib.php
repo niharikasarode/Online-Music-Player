@@ -1,7 +1,7 @@
 <?php
 
 
-isset($_REQUEST['s'])?$s = strip_tags($_REQUEST['s']):$s=""; //Setting variable
+isset($_REQUEST['s'])?$s = $_REQUEST['s']:$s=""; //Setting variable
 isset($_REQUEST['newEmail'])?$newEmail=strip_tags($_REQUEST['newEmail']):$newEmail="";
 isset($_REQUEST['newPass'])?$newPass=strip_tags($_REQUEST['newPass']):$newPass="";
 isset($_REQUEST['newUser'])?$newUser=strip_tags($_REQUEST['newUser']):$newUser="";
@@ -74,7 +74,7 @@ function authenticate($db, $postUser, $postPassd)
 	$result = mysqli_query($db, $query);
   	while($row = mysqli_fetch_row($result))
 	{
-		if($row[1] >= 5)
+		if($row[1] > 5)
 		{
 			error_log("Detected 5 failed logins");
         		if($row[0] == $id)
@@ -154,7 +154,7 @@ function authenticate($db, $postUser, $postPassd)
 			mysqli_stmt_close($stmt);
 		}
 
-		error_log("**** ERROR **** : The App has failed Login from " .$_SERVER['REMOTE_ADDR'],0);
+		//error_log("**** ERROR **** : The App has failed Login from " .$_SERVER['REMOTE_ADDR'],0);
 		session_destroy();
 		header("Location: /Project/login.php");
 		exit;
