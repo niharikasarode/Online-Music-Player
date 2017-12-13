@@ -30,21 +30,29 @@ echo"
           <header class='masthead clearfix'>
             <div class='inner'>
 	      <h3 class='masthead-brand'></h3>
-	      <ul class='nav justify-content-center'>
-		<nav class='navbar navbar-inverse bg-primary'>
+	      <ul class='navbar-nav mr-left'>
+		<nav class='navbar navbar-toggleable-md navbar-dark bg-company-black fixed-top'>
               <nav class='nav nav-pills nav-fill nav-justified'>
                 <a class='nav-link active' href=index.html>Home</a>
-                <a class='nav-link' href=tracks.php?s=0>Top Charts</a>
-                <a class='nav-link' href=tracks.php?s=1>Albums</a>
-	        <a class='nav-link' href=tracks.php>Sign In</a>
+		&nbsp;&nbsp;&nbsp;
+		<a class='nav-link' href=tracks.php?s=0>Top Charts</a>
+		&nbsp;&nbsp;&nbsp;
+		<a class='nav-link' href=tracks.php?s=1>Albums</a>
+		&nbsp;&nbsp;&nbsp;
+	        <a class='nav-link' href=login.php>Sign In</a>
+		&nbsp;&nbsp;&nbsp;
 	        <a class='nav-link' href=tracks.php?s=7>View Orders</a>
-	        <a class='nav-link' href=tracks.php?s=50>Logout</a>
+		&nbsp;&nbsp;&nbsp;
+		<a class='nav-link' href=tracks.php?s=8>Suggestion Box</a>
+		&nbsp;&nbsp;&nbsp;
+		<a class='nav-link' href=tracks.php?s=50>Logout</a>
+		</nav>
 		</nav>
             </div>
 	  </header>
 
     <main role='main' class='inner cover'>
-            <h1 style='font-size:650%;' class='cover-heading'>Online Music Store</h1>
+		<div class='circle'> <h1 style='font-size:250%;' class='cover-heading;'>Online Music Store</h1></div>
             <p class='lead'><blockquote> View.. Listen .. Buy.. </blockquote></p>
             <p class='lead'>
               <a href=tracks.php?s=2 class='btn btn-lg btn-secondary'>SIGN UP</a>

@@ -537,12 +537,75 @@ switch($s)
 			echo "<link href='login.css' rel='stylesheet'>
                 <form method=post action=tracks.php>
 		<table>
-		<p> You are not Admin! </p>
+		<p><H2><b> You are not Admin! </b></H2></p>
+		<p><tr><td style='padding-left:55px;padding-bottom:30px;font-size:40px;font-family:Georgia'><a href=tracks.php?s=50>Login As Admin?</a><br/></td></tr></p>
 		<p><tr><td style='padding-left:55px;padding-bottom:30px;font-size:40px;font-family:Georgia'><a href=index.php>Home</a><br/></td></tr></p>
 		";
 		}
 		break;
+	case 8 :
+		
+		if($_SESSION['user_id'] == 1)
+		{
 
+		}
+			
+		else
+		{
+
+			echo"
+                	<!doctype html>
+                	<html lang='en'>
+               		<head>
+                	<meta charset='utf-8'>
+                	<meta name='viewport' content='width=device-width, initial-scale=1, shrink-to-fit=no'>
+                	<meta name='description' content=''>
+                	<meta name='author' content=''>
+                	<link rel='icon' href='/bootstrap-4.0.0-beta.2/favicon.ico'>
+
+
+                	<!-- Bootstrap core CSS -->
+                	<link href='/bootstrap-4.0.0-beta.2/dist/css/bootstrap.min.css' rel='stylesheet'>
+
+                	<!-- Custom styles for this template -->
+                	<link href='tracks.css' rel='stylesheet'>
+			<link href='login.css' rel='stylesheet'>
+			</head>
+	        	<ul class='nav justify-content-center'>
+                	<nav class='nav nav-pills'>	
+			<a class='nav-link' href='index.php'>GO TO HOME PAGE</a>
+			</nav>
+			</ul>
+			<body>";
+
+						
+			echo" 
+			<form method=post action=tracks.php>
+			<table cellspacing='250'>
+        		<center>
+			<h1>Please Give Your Suggestion below</h1>
+			
+						
+			<table><tr><td> Suggestion: </td></tr>
+			<textarea rows='20' cols='40' name='suggestion'></textarea>
+			<tr><td><input type=\"hidden\" name=\"s\" value=\"9\">
+			<input type=\"submit\" name=\"submit\" value=\"Submit\"></td></tr></table></form>";
+		}
+
+		break;
+
+	case 9 :
+		$suggestion=mysqli_real_escape_string($db,$suggestion);
+		 $cid=$_SESSION['user_id'];
+		error_log("User gave suggestion : $suggestion");
+		if($stmt = mysqli_prepare($db,"INSERT INTO Suggestions SET sug_id='',user_id=?, sug_text=?"))
+                {
+                        mysqli_stmt_bind_param($stmt, "ss", $cid, $suggestion);
+                        mysqli_stmt_execute($stmt);
+                        mysqli_stmt_close($stmt);
+                }
+                else echo"ERROR Inserting into table";
+		break;	
 
 	case 50:
 		session_destroy();

@@ -26,6 +26,7 @@ isset($_REQUEST['order_name'])?$order_name=strip_tags($_REQUEST['order_name']):$
 isset($_REQUEST['cid'])?$cid = strip_tags($_REQUEST['cid']):$cid=""; //Setting variable
 isset($_REQUEST['userid'])?$userid = strip_tags($_REQUEST['userid']):$userid=""; //Setting variable
 isset($_REQUEST['price1'])?$price1=strip_tags($_REQUEST['price1']):$price1="";
+isset($_REQUEST['suggestion'])?$suggestion=strip_tags($_REQUEST['suggestion']):$suggestion="";
 
 function check_numeric($num)
 {
